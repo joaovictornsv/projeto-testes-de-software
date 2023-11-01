@@ -1,4 +1,7 @@
+import { generateRandomId } from '../utils/utils.js';
+
 export class Patient {
+  #id;
   #documentNumber;
   #name;
   #birthDate;
@@ -6,29 +9,11 @@ export class Patient {
   #phoneNumbers;
 
   constructor(patientData) {
-    this.validatePatientData(patientData);
-    this.fillPatientData(patientData);
-  }
-
-  validatePatientData(data) {
-    const isValid =
-      data &&
-      data.documentNumber &&
-      data.name &&
-      data.birthDate &&
-      data.address &&
-      data.phoneNumbers;
-
-    if (!isValid) {
-      throw new Error('Invalid patient data provided.');
-    }
-  }
-
-  fillPatientData(data) {
-    this.#documentNumber = data.documentNumber;
-    this.#name = data.name;
-    this.#birthDate = data.birthDate;
-    this.#address = data.address;
-    this.#phoneNumbers = data.phoneNumbers;
+    this.#id = generateRandomId();
+    this.#documentNumber = patientData.documentNumber;
+    this.#name = patientData.name;
+    this.#birthDate = patientData.birthDate;
+    this.#address = patientData.address;
+    this.#phoneNumbers = patientData.phoneNumbers;
   }
 }
