@@ -17,11 +17,19 @@ export class Service {
     this.#patientId = appointmentData.patientId;
     this.#attendantId = appointmentData.attendantId;
     this.#appointmentId = appointmentData.appointmentId;
-    this.#numericCode = appointmentData.numericCode;
     this.#createdAt = new Date();
+  }
+
+  get numericCode() {
+    return this.#numericCode
+  }
+
+  set numericCode(numericCode) {
+    this.#numericCode = numericCode
   }
 
   addDetails(appointmentDetails) {
     this.#details = appointmentDetails.details;
   }
+
 }
