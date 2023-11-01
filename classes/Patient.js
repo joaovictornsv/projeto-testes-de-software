@@ -19,11 +19,9 @@ export class Patient {
       data.address &&
       data.phoneNumbers;
 
-    if (isValid) {
-      return;
+    if (!isValid) {
+      throw new Error('Invalid patient data provided.');
     }
-
-    throw new Error('Invalid patient data provided.');
   }
 
   fillPatientData(data) {
