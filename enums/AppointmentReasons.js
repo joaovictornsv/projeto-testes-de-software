@@ -1,6 +1,6 @@
 import { createEnum } from '../utils/utils.js';
 
-export const AppointmentTypes = createEnum({
+export const AppointmentReasons = createEnum({
   ROUTINE: {
     label: 'Rotina',
   },

@@ -12,19 +12,19 @@ export class Appointment {
   #dentistId;
   #type;
   #amount;
-  #details;
   #procedures;
+  #createdAt;
 
   constructor(appointmentData) {
     this.#id = generateRandomId();
     this.#dentistId = appointmentData.dentistId;
     this.#patientId = appointmentData.patientId;
     this.#type = appointmentData.type;
+    this.#createdAt = new Date();
   }
 
-  addDetails(appointmentDetails) {
-    this.#details = appointmentDetails.details;
-    this.#procedures = appointmentDetails.procedures;
+  addProcedures(procedures) {
+    this.#procedures = procedures;
   }
 
   calculateAmount() {
