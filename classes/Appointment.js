@@ -2,11 +2,6 @@
 import { generateRandomId } from '../utils/utils.js';
 import { AppointmentStatus } from '../enums/AppointmentStatus.js';
 
-export const generateNewProcedure = (procedure, amount) => ({
-  procedure,
-  amount,
-});
-
 export class Appointment {
   #id;
   #patientId;
@@ -26,8 +21,11 @@ export class Appointment {
     this.#createdAt = new Date();
   }
 
-  addProcedures(procedures) {
-    this.#procedures = procedures;
+  addProcedure(procedure, amount) {
+    this.#procedures.push({
+      procedure,
+      amount,
+    });
   }
 
   calculateAmount() {

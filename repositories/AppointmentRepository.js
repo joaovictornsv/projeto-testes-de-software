@@ -11,7 +11,7 @@ export class AppointmentRepository extends BaseRepository {
     );
   }
 
-  getAppointmentsByPatientId(patientId) {
+  findAppointmentsByPatientId(patientId) {
     return this._data.find(
       (appointment) => appointment.patientId === patientId,
     );

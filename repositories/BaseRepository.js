@@ -25,4 +25,8 @@ export class BaseRepository {
   findById(id) {
     return this._data.find((datum) => datum.id === id) || null;
   }
+
+  length() {
+    return this._data.length;
+  }
 }
