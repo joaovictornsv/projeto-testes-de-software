@@ -21,15 +21,14 @@ export class Service {
   }
 
   get numericCode() {
-    return this.#numericCode
+    return this.#numericCode;
   }
 
   set numericCode(numericCode) {
-    this.#numericCode = numericCode
+    this.#numericCode = numericCode;
   }
 
   addDetails(appointmentDetails) {
     this.#details = appointmentDetails.details;
   }
-
 }
