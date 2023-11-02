@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest';
-import { Service } from '../classes/Service.js';
-import { generateRandomId } from '../utils/utils.js';
-import { ServiceRepository } from './ServiceRepository.js';
+import { Service } from '../../classes/Service.js';
+import { generateRandomId } from '../../utils/utils.js';
+import { ServiceRepository } from '../../repositories/ServiceRepository.js';
 
 const generateFakeService = () =>
   new Service({
@@ -17,7 +17,7 @@ describe('ServiceRepository', () => {
     const service = generateFakeService();
     serviceRepository.save(service);
 
-    expect(serviceRepository.length()).toEqual(1);
+    expect(serviceRepository.findById(service.id)).toBeTruthy();
   });
 
   test('getNextNumericCode', () => {

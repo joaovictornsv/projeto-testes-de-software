@@ -2,6 +2,10 @@ export class BaseRepository {
   _data = [];
 
   save(newData) {
+    // TODO - Generate id here
+    if (this.findById(newData.id)) {
+      throw new Error('Already exists a register with this id');
+    }
     this._data.push(newData);
   }
 

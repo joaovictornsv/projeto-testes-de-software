@@ -1,10 +1,10 @@
 import { PaymentTypes } from '../enums/PaymentTypes';
 
 export class Payment {
-  #mode;
+  mode;
 
   constructor(paymentMode) {
-    this.#mode = this.validateMode(paymentMode);
+    this.mode = this.validateMode(paymentMode);
   }
 
   pay() {
