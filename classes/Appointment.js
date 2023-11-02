@@ -1,5 +1,6 @@
 // Consulta
 import { generateRandomId } from '../utils/utils.js';
+import { AppointmentStatus } from '../enums/AppointmentStatus.js';
 
 export const generateNewProcedure = (procedure, amount) => ({
   procedure,
@@ -13,6 +14,7 @@ export class Appointment {
   #type;
   #amount;
   #procedures;
+  #status;
   #createdAt;
 
   constructor(appointmentData) {
@@ -20,6 +22,7 @@ export class Appointment {
     this.#dentistId = appointmentData.dentistId;
     this.#patientId = appointmentData.patientId;
     this.#type = appointmentData.type;
+    this.#status = AppointmentStatus.WAITING_FOR_SERVICE;
     this.#createdAt = new Date();
   }
 
@@ -32,5 +35,13 @@ export class Appointment {
       (acc, procedure) => acc + procedure.amount,
       0,
     );
+  }
+
+  get status() {
+    return this.#status;
+  }
+
+  done() {
+    this.#status = AppointmentStatus.DONE.name;
   }
 }

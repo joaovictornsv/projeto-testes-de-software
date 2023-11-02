@@ -1,5 +1,6 @@
 // Atendimento
 import { generateRandomId } from '../utils/utils.js';
+import { ServiceStatus } from '../enums/ServiceStatus.js';
 
 export class Service {
   #id;
@@ -9,6 +10,7 @@ export class Service {
   #appointmentId;
   #details;
   #numericCode;
+  #status;
   #createdAt;
 
   constructor(appointmentData) {
@@ -17,6 +19,7 @@ export class Service {
     this.#patientId = appointmentData.patientId;
     this.#attendantId = appointmentData.attendantId;
     this.#appointmentId = appointmentData.appointmentId;
+    this.#status = ServiceStatus.OPEN.name;
     this.#createdAt = new Date();
   }
 
@@ -30,5 +33,9 @@ export class Service {
 
   addDetails(appointmentDetails) {
     this.#details = appointmentDetails.details;
+  }
+
+  done() {
+    this.#status = ServiceStatus.DONE.name;
   }
 }
