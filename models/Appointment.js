@@ -2,6 +2,7 @@ import { generateRandomId } from '../utils/utils.js';
 import { AppointmentStatus } from '../enums/AppointmentStatus.js';
 import { appointmentRepository } from '../repositories/AppointmentRepository.js';
 import { PaymentStatus } from '../enums/PaymentTypes.js';
+import { Procedure } from './Procedure.js';
 
 // Consulta
 export class Appointment {
@@ -32,11 +33,13 @@ export class Appointment {
     });
   }
 
-  addProcedure(procedure, amount) {
-    this.procedures.push({
-      procedure,
-      amount,
-    });
+  addProcedure({ details, amount }) {
+    this.procedures.push(
+      new Procedure({
+        details,
+        amount,
+      }),
+    );
     appointmentRepository.update(this.id, {
       procedures: this.procedures,
     });

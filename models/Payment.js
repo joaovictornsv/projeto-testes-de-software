@@ -4,10 +4,10 @@ export class Payment {
   mode;
 
   constructor(paymentMode) {
-    this.mode = this.validateMode(paymentMode);
+    this.mode = this.#validateMode(paymentMode);
   }
 
-  validateMode(mode) {
+  #validateMode(mode) {
     const paymentType = PaymentTypes[mode];
     if (!paymentType) {
       throw Error('Modo de pagamento inválido!');

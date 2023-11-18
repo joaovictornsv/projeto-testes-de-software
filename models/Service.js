@@ -59,5 +59,6 @@ export class Service {
       dentistId: this.dentistId,
       appointmentId: this.appointmentId,
     });
+    return appointment;
   }
 }
