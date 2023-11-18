@@ -7,10 +7,6 @@ export class Payment {
     this.mode = this.validateMode(paymentMode);
   }
 
-  pay() {
-    return 'Pago';
-  }
-
   validateMode(mode) {
     const paymentType = PaymentTypes[mode];
     if (!paymentType) {
