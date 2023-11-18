@@ -8,9 +8,6 @@ export const AppointmentStatus = createEnum({
   IN_SERVICE: {
     label: 'Em consulta',
   },
-  WAITING_PAYMENT: {
-    label: 'Aguardando pagamento',
-  },
   DONE: {
     label: 'Consulta finalizada',
   },

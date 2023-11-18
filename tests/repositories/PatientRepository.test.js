@@ -1,16 +1,6 @@
 import { describe, expect, test } from 'vitest';
-import { Patient } from '../../models/Patient.js';
+import { generateFakePatient } from '../utils/CreateFakeData.js';
 import { PatientRepository } from '../../repositories/PatientRepository.js';
-
-const generateFakePatient = (name) => {
-  return new Patient({
-    documentNumber: '098.987.876-00',
-    name: name,
-    birthDate: new Date(),
-    address: 'Rua Rensilson Bivar',
-    phoneNumbers: ['(83) 99983-1234', '2325-2324'],
-  });
-};
 
 describe('PatientRepository', () => {
   test('save', () => {

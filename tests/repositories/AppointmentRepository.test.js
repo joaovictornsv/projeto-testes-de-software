@@ -1,27 +1,10 @@
 import { describe, expect, test } from 'vitest';
 import { AppointmentRepository } from '../../repositories/AppointmentRepository.js';
-import { Appointment } from '../../models/Appointment.js';
-import { Patient } from '../../models/Patient.js';
-import { generateRandomId } from '../../utils/utils.js';
+import {
+  generateFakeAppointment,
+  generateFakePatient,
+} from '../utils/CreateFakeData.js';
 import { AppointmentReasons } from '../../enums/AppointmentReasons.js';
-
-const generateFakePatient = (name) => {
-  return new Patient({
-    documentNumber: '098.987.876-00',
-    name: name,
-    birthDate: new Date(),
-    address: 'Rua Rensilson Bivar',
-    phoneNumbers: ['(83) 99983-1234', '2325-2324'],
-  });
-};
-
-const generateFakeAppointment = (patientId, appointmentType) => {
-  return new Appointment({
-    dentistId: generateRandomId(),
-    appointmentType,
-    patientId,
-  });
-};
 
 describe('AppointmentRepository', () => {
   test('save', () => {

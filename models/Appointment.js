@@ -22,7 +22,8 @@ export class Appointment {
     this.type = appointmentType;
     this.status = AppointmentStatus.WAITING_FOR_SERVICE.name;
     this.createdAt = new Date();
-    this.paymentStatus = PaymentStatus.AWAITING_PAYMENT;
+    this.paymentStatus = PaymentStatus.WAITING_PAYMENT.name;
+    this.procedures = [];
     appointmentRepository.save({
       id: this.id,
       dentistId: this.dentistId,
@@ -57,17 +58,17 @@ export class Appointment {
 
   pay(date) {
     this.checkPayment(date);
-    this.paymentStatus = PaymentStatus.PAID_OUT;
-    this.status = AppointmentStatus.DONE;
+    this.paymentStatus = PaymentStatus.PAID_OUT.name;
+    this.status = AppointmentStatus.DONE.name;
   }
 
   checkPayment(date) {
     const appointmentDate = new Date(this.createdAt);
     const time =
-      date.getTime() -
-      appointmentDate.setMonth(appointmentDate.getMonth() + 1).getTime();
+      date.getTime -
+      appointmentDate.setMonth(appointmentDate.getMonth() + 1).getTime;
     if (time > 0) {
-      this.paymentStatus = PaymentStatus.OVERDUE;
+      this.paymentStatus = PaymentStatus.OVERDUE.name;
       this.amount = this.amount + (this.amount * 10) / 100;
     }
   }

@@ -1,15 +1,6 @@
 import { describe, expect, test } from 'vitest';
-import { Service } from '../../models/Service.js';
-import { generateRandomId } from '../../utils/utils.js';
+import { generateFakeService } from '../utils/CreateFakeData.js';
 import { ServiceRepository } from '../../repositories/ServiceRepository.js';
-
-const generateFakeService = () =>
-  new Service({
-    dentistId: generateRandomId(),
-    patientId: generateRandomId(),
-    appointmentId: generateRandomId(),
-    attendantId: generateRandomId(),
-  });
 
 describe('ServiceRepository', () => {
   test('save', () => {

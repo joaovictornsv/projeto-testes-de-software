@@ -26,7 +26,7 @@ export const PaymentStatus = createEnum({
   PAID_OUT: {
     label: 'Pago',
   },
-  AWAITING_PAYMENT: {
+  WAITING_PAYMENT: {
     label: 'Aguardando pagamento',
   },
 });
