@@ -18,3 +18,15 @@ export const PaymentTypes = createEnum({
     isMoney: true,
   },
 });
+
+export const PaymentStatus = createEnum({
+  OVERDUE: {
+    label: 'Atrasado',
+  },
+  PAID_OUT: {
+    label: 'Pago',
+  },
+  AWAITING_PAYMENT: {
+    label: 'Aguardando pagamento',
+  },
+});
