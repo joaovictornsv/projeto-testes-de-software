@@ -3,15 +3,13 @@ import { Patient } from '../../classes/Patient.js';
 import { PatientRepository } from '../../repositories/PatientRepository.js';
 
 const generateFakePatient = (name) => {
-  const patient = new Patient();
-  patient.set({
+  return new Patient({
     documentNumber: '098.987.876-00',
     name: name,
     birthDate: new Date(),
     address: 'Rua Rensilson Bivar',
     phoneNumbers: ['(83) 99983-1234', '2325-2324'],
   });
-  return patient;
 };
 
 describe('PatientRepository', () => {

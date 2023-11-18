@@ -12,6 +12,6 @@ export const AppointmentStatus = createEnum({
     label: 'Aguardando pagamento',
   },
   DONE: {
-    label: 'Consultad finalizada',
+    label: 'Consulta finalizada',
   },
 });

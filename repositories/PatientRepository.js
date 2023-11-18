@@ -5,3 +5,5 @@ export class PatientRepository extends BaseRepository {
     return this._data.find((patient) => patient.name === name) || null;
   }
 }
+
+export const patientRepository = new PatientRepository();

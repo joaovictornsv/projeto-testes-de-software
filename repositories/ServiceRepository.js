@@ -21,3 +21,5 @@ export class ServiceRepository extends BaseRepository {
     return this.findAll().pop() || null;
   }
 }
+
+export const serviceRepository = new ServiceRepository();
