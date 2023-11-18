@@ -30,6 +30,10 @@ export class BaseRepository {
     return this._data.find((datum) => datum.id === id) || null;
   }
 
+  clear() {
+    this._data = [];
+  }
+
   length() {
     return this._data.length;
   }

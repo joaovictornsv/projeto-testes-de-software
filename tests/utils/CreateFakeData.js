@@ -23,9 +23,6 @@ export const generateFakeAppointment = (patientId, appointmentType) => {
 
 export const generateFakeService = () => {
   return new Service({
-    dentistId: generateRandomId(),
-    patientId: generateRandomId(),
-    appointmentId: generateRandomId(),
     attendantId: generateRandomId(),
   });
 };

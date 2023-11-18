@@ -7,6 +7,7 @@ import { PaymentStatus } from '../../enums/PaymentTypes';
 import { AppointmentStatus } from '../../enums/AppointmentStatus';
 
 describe('Appointment', () => {
+  // Integration
   test('addProcedure', () => {
     // create
     const service = generateFakeService();
@@ -25,6 +26,7 @@ describe('Appointment', () => {
     expect(appointment.procedures[0].amount === amount);
   });
 
+  // Integration
   test('calculateAmount', () => {
     // create
     const service = generateFakeService();
@@ -48,6 +50,7 @@ describe('Appointment', () => {
     expect(appointment.amount === total);
   });
 
+  // Integration
   test('pay->paidOut', () => {
     // create
     const service = generateFakeService();
@@ -76,6 +79,7 @@ describe('Appointment', () => {
     expect(appointment.paymentStatus === PaymentStatus.PAID_OUT.name);
   });
 
+  // Integration
   test('pay->overdue', () => {
     // create
     const service = generateFakeService();
@@ -104,6 +108,7 @@ describe('Appointment', () => {
     expect(appointment.paymentStatus === PaymentStatus.OVERDUE.name);
   });
 
+  // Unit
   test('done', () => {
     // create
     const service = generateFakeService();
