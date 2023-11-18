@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { Service } from '../../classes/Service.js';
+import { Service } from '../../models/Service.js';
 import { generateRandomId } from '../../utils/utils.js';
 import { ServiceRepository } from '../../repositories/ServiceRepository.js';
 

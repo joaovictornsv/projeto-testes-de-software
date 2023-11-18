@@ -19,7 +19,7 @@ export class Appointment {
     this.dentistId = dentistId;
     this.patientId = patientId;
     this.type = appointmentType;
-    this.status = AppointmentStatus.WAITING_FOR_SERVICE;
+    this.status = AppointmentStatus.WAITING_FOR_SERVICE.name;
     this.createdAt = new Date();
     this.paymentStatus = PaymentStatus.AWAITING_PAYMENT;
     appointmentRepository.save({
