@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { Patient } from '../../classes/Patient.js';
+import { Patient } from '../../models/Patient.js';
 import { PatientRepository } from '../../repositories/PatientRepository.js';
 
 const generateFakePatient = (name) => {
