@@ -63,18 +63,19 @@ export class Appointment {
 
   pay(date) {
     this.checkPayment(date);
-    this.paymentStatus = PaymentStatus.PAID_OUT.name;
-    this.status = AppointmentStatus.DONE.name;
+    this.done();
   }
 
   checkPayment(date) {
     const appointmentDate = new Date(this.createdAt);
-    const time =
-      date.getTime -
-      appointmentDate.setMonth(appointmentDate.getMonth() + 1).getTime;
+    const dateToCheck = new Date(appointmentDate);
+    dateToCheck.setMonth(dateToCheck.getMonth() + 1);
+    const time = date.getTime() - dateToCheck.getTime();
     if (time > 0) {
       this.paymentStatus = PaymentStatus.OVERDUE.name;
       this.amount = this.amount + (this.amount * 10) / 100;
+    } else {
+      this.paymentStatus = PaymentStatus.PAID_OUT.name;
     }
   }
 

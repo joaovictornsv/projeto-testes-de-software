@@ -22,8 +22,8 @@ describe('Appointment', () => {
     appointment.addProcedure({ details, amount });
 
     // expected
-    expect(appointment.procedures[0].details === details);
-    expect(appointment.procedures[0].amount === amount);
+    expect(appointment.procedures[0].details).toEqual(details);
+    expect(appointment.procedures[0].amount).toEqual(amount);
   });
 
   // Integration
@@ -40,14 +40,14 @@ describe('Appointment', () => {
     ];
 
     // action
-    procedures.forEach((details, amount) => {
+    procedures.forEach(([details, amount]) => {
       appointment.addProcedure({ details, amount });
     });
     appointment.calculateAmount();
 
     // expected
     const total = 700.0;
-    expect(appointment.amount === total);
+    expect(appointment.amount).toEqual(total);
   });
 
   // Integration
@@ -67,7 +67,9 @@ describe('Appointment', () => {
     appointment.addProcedure({ details, amount });
 
     // expected 1 - wait payment
-    expect(appointment.paymentStatus === PaymentStatus.WAITING_PAYMENT.name);
+    expect(appointment.paymentStatus).toEqual(
+      PaymentStatus.WAITING_PAYMENT.name,
+    );
 
     // action 2 - pay
     appointment.calculateAmount();
@@ -75,8 +77,8 @@ describe('Appointment', () => {
 
     // expected 2 - paid out
     const total = 500.0;
-    expect(appointment.amount === total);
-    expect(appointment.paymentStatus === PaymentStatus.PAID_OUT.name);
+    expect(appointment.amount).toEqual(total);
+    expect(appointment.paymentStatus).toEqual(PaymentStatus.PAID_OUT.name);
   });
 
   // Integration
@@ -96,7 +98,9 @@ describe('Appointment', () => {
     appointment.addProcedure({ details, amount });
 
     // expected 1 - wait payment
-    expect(appointment.paymentStatus === PaymentStatus.WAITING_PAYMENT.name);
+    expect(appointment.paymentStatus).toEqual(
+      PaymentStatus.WAITING_PAYMENT.name,
+    );
 
     // action 2 - pay
     appointment.calculateAmount();
@@ -104,8 +108,8 @@ describe('Appointment', () => {
 
     // expected 2 - paid out
     const total = 550.0;
-    expect(appointment.amount === total);
-    expect(appointment.paymentStatus === PaymentStatus.OVERDUE.name);
+    expect(appointment.amount).toEqual(total);
+    expect(appointment.paymentStatus).toEqual(PaymentStatus.OVERDUE.name);
   });
 
   // Unit
@@ -121,6 +125,6 @@ describe('Appointment', () => {
     appointment.done();
 
     // expected
-    expect(appointment.status === AppointmentStatus.DONE.name);
+    expect(appointment.status).toEqual(AppointmentStatus.DONE.name);
   });
 });
