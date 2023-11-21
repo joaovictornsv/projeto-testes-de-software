@@ -5,21 +5,28 @@ import {
   generateFakePatient,
   generateFakeService,
 } from '../utils/CreateFakeData.js';
-import { patientRepository } from '../../repositories/PatientRepository.js';
+import { fakePatientRepository } from '../../repositories/PatientRepository.js';
 import { AppointmentReasons } from '../../enums/AppointmentReasons.js';
-import { appointmentRepository } from '../../repositories/AppointmentRepository.js';
-import { serviceRepository } from '../../repositories/ServiceRepository.js';
+import { fakeAppointmentRepository } from '../../repositories/AppointmentRepository.js';
+import { fakeServiceRepository } from '../../repositories/ServiceRepository.js';
 
 describe('Service', () => {
   beforeEach(() => {
-    patientRepository.clear();
-    appointmentRepository.clear();
-    serviceRepository.clear();
+    fakePatientRepository.clear();
+    fakeAppointmentRepository.clear();
+    fakeServiceRepository.clear();
   });
   // Unit
   test('constructor', () => {
     const attendantId = generateRandomId();
-    const service = new Service({ attendantId });
+    const service = new Service(
+      { attendantId },
+      {
+        patientRepository: fakePatientRepository,
+        serviceRepository: fakeServiceRepository,
+        appointmentRepository: fakeAppointmentRepository,
+      },
+    );
     expect(service.attendantId).toEqual(attendantId);
   });
 
@@ -64,7 +71,7 @@ describe('Service', () => {
     service.registerPatient(patientData);
 
     expect(service.patientId).toBeTruthy();
-    expect(patientRepository.length()).toEqual(1);
+    expect(fakePatientRepository.length()).toEqual(1);
   });
 
   // Integration
@@ -72,6 +79,15 @@ describe('Service', () => {
     const doctorName = 'Fernando';
     const appointmentType = AppointmentReasons.TOOTHACHE.name;
     const service = generateFakeService();
+    const patientData = {
+      name: 'João',
+      address: 'Rua José Maria, 130',
+      phoneNumbers: ['99999999999'],
+      documentNumber: '000.000.000-00',
+      birthDate: new Date(),
+    };
+    service.registerPatient(patientData);
+
     const appointment = service.registerAppointment({
       doctorName,
       appointmentType,
@@ -82,6 +98,6 @@ describe('Service', () => {
 
     expect(appointment.type).toEqual(appointmentType);
 
-    expect(appointmentRepository.length()).toEqual(1);
+    expect(fakePatientRepository.length()).toEqual(1);
   });
 });

@@ -1,6 +1,5 @@
 import { generateRandomId } from '../utils/utils.js';
 import { AppointmentStatus } from '../enums/AppointmentStatus.js';
-import { appointmentRepository } from '../repositories/AppointmentRepository.js';
 import { PaymentStatus } from '../enums/PaymentTypes.js';
 import { Procedure } from './Procedure.js';
 
@@ -14,8 +13,12 @@ export class Appointment {
   procedures;
   status;
   createdAt;
+  appointmentRepository;
 
-  constructor({ dentistId, patientId, appointmentType }) {
+  constructor(
+    { dentistId, patientId, appointmentType },
+    { appointmentRepository },
+  ) {
     this.id = generateRandomId();
     this.dentistId = dentistId;
     this.patientId = patientId;
@@ -24,7 +27,9 @@ export class Appointment {
     this.createdAt = new Date();
     this.paymentStatus = PaymentStatus.WAITING_PAYMENT.name;
     this.procedures = [];
-    appointmentRepository.save({
+
+    this.appointmentRepository = appointmentRepository;
+    this.appointmentRepository.save({
       id: this.id,
       dentistId: this.dentistId,
       patientId: this.patientId,
@@ -41,7 +46,7 @@ export class Appointment {
         amount,
       }),
     );
-    appointmentRepository.update(this.id, {
+    this.appointmentRepository.update(this.id, {
       procedures: this.procedures,
     });
   }
@@ -51,7 +56,7 @@ export class Appointment {
       (acc, procedure) => acc + procedure.amount,
       0,
     );
-    appointmentRepository.update(this.id, {
+    this.appointmentRepository.update(this.id, {
       amount: this.amount,
     });
   }
@@ -75,7 +80,7 @@ export class Appointment {
 
   done() {
     this.status = AppointmentStatus.DONE.name;
-    appointmentRepository.update(this.id, {
+    this.appointmentRepository.update(this.id, {
       status: this.status,
     });
   }

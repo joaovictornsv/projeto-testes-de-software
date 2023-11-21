@@ -23,3 +23,4 @@ export class ServiceRepository extends BaseRepository {
 }
 
 export const serviceRepository = new ServiceRepository();
+export const fakeServiceRepository = new ServiceRepository();

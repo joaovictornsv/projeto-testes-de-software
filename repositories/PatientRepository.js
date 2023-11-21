@@ -7,3 +7,4 @@ export class PatientRepository extends BaseRepository {
 }
 
 export const patientRepository = new PatientRepository();
+export const fakePatientRepository = new PatientRepository();

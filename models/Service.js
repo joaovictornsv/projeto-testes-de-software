@@ -1,8 +1,6 @@
 import { generateRandomId } from '../utils/utils.js';
-import { patientRepository } from '../repositories/PatientRepository.js';
 import { Appointment } from './Appointment.js';
 import { Dentist } from './Dentist.js';
-import { serviceRepository } from '../repositories/ServiceRepository.js';
 import { Patient } from './Patient.js';
 
 // Atendimento
@@ -15,12 +13,23 @@ export class Service {
   details;
   numericCode;
   createdAt;
+  serviceRepository;
+  patientRepository;
+  appointmentRepository;
 
-  constructor({ attendantId }) {
+  constructor(
+    { attendantId },
+    { serviceRepository, patientRepository, appointmentRepository },
+  ) {
     this.id = generateRandomId();
     this.attendantId = attendantId;
     this.createdAt = new Date();
-    serviceRepository.save({
+
+    this.serviceRepository = serviceRepository;
+    this.patientRepository = patientRepository;
+    this.appointmentRepository = appointmentRepository;
+
+    this.serviceRepository.save({
       id: this.id,
       attendantId: this.attendantId,
       status: this.status,
@@ -30,35 +39,41 @@ export class Service {
 
   addDetails(appointmentDetails) {
     this.details = appointmentDetails;
-    serviceRepository.update(this.id, { details: this.details });
+    this.serviceRepository.update(this.id, { details: this.details });
   }
 
   verifyPatientRegisterByName(patientName) {
-    return patientRepository.findByName(patientName);
+    return this.patientRepository.findByName(patientName);
   }
 
   registerPatient({ documentNumber, name, birthDate, address, phoneNumbers }) {
-    const patient = new Patient({
-      documentNumber,
-      name,
-      birthDate,
-      address,
-      phoneNumbers,
-    });
+    const patient = new Patient(
+      {
+        documentNumber,
+        name,
+        birthDate,
+        address,
+        phoneNumbers,
+      },
+      { patientRepository: this.patientRepository },
+    );
     this.patientId = patient.id;
-    serviceRepository.update(this.id, { patientId: this.patientId });
+    this.serviceRepository.update(this.id, { patientId: this.patientId });
   }
 
   registerAppointment({ doctorName, appointmentType }) {
     const dentist = new Dentist(doctorName);
-    const appointment = new Appointment({
-      appointmentType,
-      dentistId: dentist.id,
-      patientId: this.patientId,
-    });
+    const appointment = new Appointment(
+      {
+        appointmentType,
+        dentistId: dentist.id,
+        patientId: this.patientId,
+      },
+      { appointmentRepository: this.appointmentRepository },
+    );
     this.dentistId = dentist.id;
     this.appointmentId = appointment.id;
-    serviceRepository.update(this.id, {
+    this.serviceRepository.update(this.id, {
       dentistId: this.dentistId,
       appointmentId: this.appointmentId,
     });

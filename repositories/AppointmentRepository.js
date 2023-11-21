@@ -19,3 +19,4 @@ export class AppointmentRepository extends BaseRepository {
 }
 
 export const appointmentRepository = new AppointmentRepository();
+export const fakeAppointmentRepository = new AppointmentRepository();
