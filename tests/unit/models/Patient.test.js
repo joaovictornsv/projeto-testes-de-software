@@ -1,9 +1,8 @@
 import { describe, test, expect } from 'vitest';
-import { Patient } from '../../models/Patient.js';
-import { fakePatientRepository } from '../../repositories/PatientRepository.js';
+import { Patient } from '../../../models/Patient.js';
+import { fakePatientRepository } from '../../../repositories/PatientRepository.js';
 
 describe('Patient', () => {
-  // Unit
   test('constructor', () => {
     const name = 'João';
     const address = 'Rua José Maria, 130';

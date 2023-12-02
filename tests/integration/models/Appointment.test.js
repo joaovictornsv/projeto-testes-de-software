@@ -2,12 +2,10 @@ import { describe, expect, test } from 'vitest';
 import {
   generateFakeAppointment,
   generateFakeService,
-} from '../utils/CreateFakeData';
-import { PaymentStatus } from '../../enums/PaymentTypes';
-import { AppointmentStatus } from '../../enums/AppointmentStatus';
+} from '../../utils/CreateFakeData';
+import { PaymentStatus } from '../../../enums/PaymentTypes';
 
 describe('Appointment', () => {
-  // Integration
   test('addProcedure', () => {
     // create
     const service = generateFakeService();
@@ -26,7 +24,6 @@ describe('Appointment', () => {
     expect(appointment.procedures[0].amount).toEqual(amount);
   });
 
-  // Integration
   test('calculateAmount', () => {
     // create
     const service = generateFakeService();
@@ -50,7 +47,6 @@ describe('Appointment', () => {
     expect(appointment.amount).toEqual(total);
   });
 
-  // Integration
   test('pay->paidOut', () => {
     // create
     const service = generateFakeService();
@@ -81,7 +77,6 @@ describe('Appointment', () => {
     expect(appointment.paymentStatus).toEqual(PaymentStatus.PAID_OUT.name);
   });
 
-  // Integration
   test('pay->overdue', () => {
     // create
     const service = generateFakeService();
@@ -110,21 +105,5 @@ describe('Appointment', () => {
     const total = 550.0;
     expect(appointment.amount).toEqual(total);
     expect(appointment.paymentStatus).toEqual(PaymentStatus.OVERDUE.name);
-  });
-
-  // Unit
-  test('done', () => {
-    // create
-    const service = generateFakeService();
-    const appointment = generateFakeAppointment(
-      service.patientId,
-      'Dor de dente',
-    );
-
-    // action
-    appointment.done();
-
-    // expected
-    expect(appointment.status).toEqual(AppointmentStatus.DONE.name);
   });
 });
