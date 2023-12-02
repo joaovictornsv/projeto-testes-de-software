@@ -2,7 +2,21 @@ import { BaseRepository } from './BaseRepository.js';
 import { AppointmentStatus } from '../enums/AppointmentStatus.js';
 
 export class AppointmentRepository extends BaseRepository {
-  getNextPatient() {
+  #totalAppointments = 0;
+  #limit = 10;
+
+  update(id, updatedData) {
+    if (updatedData.status === AppointmentStatus.DONE.name) {
+      this.#totalAppointments = this.#totalAppointments + 1;
+    }
+    return super.update(id, updatedData);
+  }
+
+  getNextAppointment() {
+    if (this.#totalAppointments === this.#limit) {
+      throw new Error('Limite de atendimentos diário atingido');
+    }
+
     return (
       this._data
         .filter(({ status }) => AppointmentStatus[status].isWaitingForService)
