@@ -15,8 +15,8 @@ describe('Service', () => {
     fakeServiceRepository.clear();
   });
 
-  test('verifyPatientRegisterByName', () => {
-    const patient = generateFakePatient();
+  test('verifyPatientRegisterByName - patient found', () => {
+    const patient = generateFakePatient('Luis');
     const service = generateFakeService();
 
     const patientFound = service.verifyPatientRegisterByName(patient.name);
@@ -47,6 +47,26 @@ describe('Service', () => {
     );
   });
 
+  test('verifyPatientRegisterByName - empty name', () => {
+    // create
+    const service = generateFakeService();
+
+    // expected
+    expect(() => service.verifyPatientRegisterByName()).toThrow(
+      'Empty patient name is invalid!',
+    );
+  });
+
+  test('verifyPatientRegisterByName - less than 3 characters', () => {
+    // create
+    const service = generateFakeService();
+
+    // expected
+    expect(() => service.verifyPatientRegisterByName('Ju')).toThrow(
+      'Name has less than 3 characters',
+    );
+  });
+
   test('registerPatient - pass patient data with invalid document number', () => {
     const patientData = {
       name: 'João',
@@ -73,6 +93,32 @@ describe('Service', () => {
     service.registerPatient(patientData);
 
     expect(service.patientId).toBeTruthy();
+    expect(fakePatientRepository.length()).toEqual(1);
+  });
+
+  test('registerAppointment - Successful', () => {
+    const doctorName = 'Fernando';
+    const appointmentType = AppointmentReasons.TOOTHACHE.name;
+    const service = generateFakeService();
+    const patientData = {
+      name: 'João',
+      address: 'Rua José Maria, 130',
+      phoneNumbers: ['99999999999'],
+      documentNumber: '000.000.000-00',
+      birthDate: new Date(),
+    };
+    service.registerPatient(patientData);
+
+    const appointment = service.registerAppointment({
+      doctorName,
+      appointmentType,
+    });
+
+    expect(service.dentistId).toBeTruthy();
+    expect(service.appointmentId).toEqual(appointment.id);
+
+    expect(appointment.type).toEqual(appointmentType);
+
     expect(fakePatientRepository.length()).toEqual(1);
   });
 

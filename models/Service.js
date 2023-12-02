@@ -52,6 +52,12 @@ export class Service {
   }
 
   verifyPatientRegisterByName(patientName) {
+    if (!patientName) {
+      throw new Error('Empty patient name is invalid!');
+    }
+    if (patientName.length < 3) {
+      throw new Error('Name has less than 3 characters');
+    }
     return this.patientRepository.findByName(patientName);
   }
 
