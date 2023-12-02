@@ -2,6 +2,7 @@ import { generateRandomId } from '../utils/utils.js';
 import { Appointment } from './Appointment.js';
 import { Dentist } from './Dentist.js';
 import { Patient } from './Patient.js';
+import { ServiceStatus } from '../enums/ServiceStatus.js';
 
 // Atendimento
 export class Service {
@@ -13,6 +14,7 @@ export class Service {
   details;
   numericCode;
   createdAt;
+  status;
   serviceRepository;
   patientRepository;
   appointmentRepository;
@@ -32,14 +34,18 @@ export class Service {
     this.serviceRepository.save({
       id: this.id,
       attendantId: this.attendantId,
-      status: this.status,
+      status: ServiceStatus.IN_APPOINTMENT.name,
       createdAt: this.createdAt,
     });
   }
 
   addDetails(appointmentDetails) {
     this.details = appointmentDetails;
-    this.serviceRepository.update(this.id, { details: this.details });
+    this.status = ServiceStatus.DONE.name;
+    this.serviceRepository.update(this.id, {
+      details: this.details,
+      status: this.status,
+    });
   }
 
   verifyPatientRegisterByName(patientName) {
