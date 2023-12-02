@@ -4,8 +4,24 @@ import {
   generateFakeService,
 } from '../../utils/CreateFakeData';
 import { PaymentStatus } from '../../../enums/PaymentTypes';
+import { AppointmentStatus } from '../../../enums/AppointmentStatus';
 
 describe('Appointment', () => {
+  test('done', () => {
+    // create
+    const service = generateFakeService();
+    const appointment = generateFakeAppointment(
+      service.patientId,
+      'Dor de dente',
+    );
+
+    // action
+    appointment.done();
+
+    // expected
+    expect(appointment.status).toEqual(AppointmentStatus.DONE.name);
+  });
+
   test('addProcedure', () => {
     // create
     const service = generateFakeService();
@@ -33,7 +49,7 @@ describe('Appointment', () => {
     );
     const procedures = [
       ['Extração', 500.0],
-      ['Limpeza', 200.0],
+      ['Limpeza', 300.0],
     ];
 
     // action
@@ -43,7 +59,27 @@ describe('Appointment', () => {
     appointment.calculateAmount();
 
     // expected
-    const total = 700.0;
+    const total = 800.0;
+    expect(appointment.amount).toEqual(total);
+  });
+
+  test('pay - empty list', () => {
+    // create
+    const service = generateFakeService();
+    const appointment = generateFakeAppointment(
+      service.patientId,
+      'Dor de dente',
+    );
+    const procedures = [];
+
+    // action
+    procedures.forEach(([details, amount]) => {
+      appointment.addProcedure({ details, amount });
+    });
+    appointment.calculateAmount();
+
+    // expected
+    const total = 0.0;
     expect(appointment.amount).toEqual(total);
   });
 
@@ -80,13 +116,10 @@ describe('Appointment', () => {
   test('pay->overdue', () => {
     // create
     const service = generateFakeService();
-    const appointment = generateFakeAppointment(
-      service.patientId,
-      'Dor de dente',
-    );
+    const appointment = generateFakeAppointment(service.patientId, 'Rotina');
     appointment.createdAt = new Date('November 1, 2023');
     const payDate = new Date('December 17, 2023');
-    const details = 'Extração';
+    const details = 'Limpeza';
     const amount = 500.0;
 
     // action 1 - do procedure
