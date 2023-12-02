@@ -11,9 +11,11 @@ export class AppointmentRepository extends BaseRepository {
     );
   }
 
-  findAppointmentsByPatientId(patientId) {
-    return this._data.find(
-      (appointment) => appointment.patientId === patientId,
+  findAppointmentsByPatientId(patientId, appointmentType = null) {
+    return this._data.filter(
+      (appointment) =>
+        appointment.patientId === patientId &&
+        (!appointmentType || appointment.type === appointmentType),
     );
   }
 }

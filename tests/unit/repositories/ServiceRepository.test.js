@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'vitest';
 import { generateFakeService } from '../../utils/CreateFakeData.js';
 import { ServiceRepository } from '../../../repositories/ServiceRepository.js';
+import { AppointmentReasons } from '../../../enums/AppointmentReasons.js';
 
 describe('ServiceRepository', () => {
   test('save', () => {
@@ -43,5 +44,29 @@ describe('ServiceRepository', () => {
     }
 
     expect(serviceRepository.getNextNumericCode()).toEqual(50);
+  });
+
+  test('registerAppointment - Invalid doctor name', () => {
+    // create
+    const doctorName = null;
+    const appointmentType = AppointmentReasons.TOOTHACHE.name;
+    const service = generateFakeService();
+
+    // expect
+    expect(() =>
+      service.registerAppointment({ doctorName, appointmentType }),
+    ).toThrow('Invalid doctor name!');
+  });
+
+  test('registerAppointment - Invalid appointment type!', () => {
+    // create
+    const doctorName = 'Henrique';
+    const appointmentType = 'Exame laboratorial';
+    const service = generateFakeService();
+
+    // expect
+    expect(() =>
+      service.registerAppointment({ doctorName, appointmentType }),
+    ).toThrow('Invalid appointment type!');
   });
 });

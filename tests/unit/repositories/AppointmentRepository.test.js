@@ -59,4 +59,90 @@ describe('AppointmentRepository', () => {
     // expected
     expect(nextPatient).toBeNull();
   });
+
+  test('findAppointmentsByPatientId - patient was consulted', () => {
+    // create
+    const patient = generateFakePatient('Luis');
+    const appointmentRepository = new AppointmentRepository();
+
+    // action
+    let appReason = null;
+    for (let i in Array(10).fill(0)) {
+      if (i % 2 === 0) {
+        appReason = AppointmentReasons.ROUTINE.name;
+      } else {
+        appReason = AppointmentReasons.TOOTHACHE.name;
+      }
+      const appointment = generateFakeAppointment(patient.id, appReason);
+      appointmentRepository.save(appointment);
+    }
+
+    // expect
+    const patientAppointments =
+      appointmentRepository.findAppointmentsByPatientId(patient.id);
+    expect(patientAppointments.length).toEqual(10);
+
+    expect(
+      patientAppointments.every(
+        (appointment) => appointment.patientId === patient.id,
+      ),
+    ).toBeTruthy();
+  });
+
+  test('findAppointmentsByPatientId - find appointments for a patient reason', () => {
+    // create
+    const patient = generateFakePatient('Luis');
+    const appointmentRepository = new AppointmentRepository();
+
+    // action
+    let appReason = null;
+    for (let i in Array(10).fill(0)) {
+      if (i % 2 === 0) {
+        appReason = AppointmentReasons.ROUTINE.name;
+      } else {
+        appReason = AppointmentReasons.TOOTHACHE.name;
+      }
+      const appointment = generateFakeAppointment(patient.id, appReason);
+      appointmentRepository.save(appointment);
+    }
+
+    // expect
+    const patientAppointments =
+      appointmentRepository.findAppointmentsByPatientId(
+        patient.id,
+        AppointmentReasons.TOOTHACHE.name,
+      );
+    expect(patientAppointments.length).toEqual(5);
+
+    expect(
+      patientAppointments.every(
+        (appointment) => appointment.patientId === patient.id,
+      ),
+    ).toBeTruthy();
+  });
+
+  test('findAppointmentsByPatientId - patient was not consulted', () => {
+    // create
+    const patient = generateFakePatient('Luis');
+    const appointmentRepository = new AppointmentRepository();
+
+    // expect
+    const patientAppointments =
+      appointmentRepository.findAppointmentsByPatientId(patient.id);
+    expect(patientAppointments.length).toEqual(0);
+  });
+
+  test('findAppointmentsByPatientId - find appointments for a patient reason who was not consulted', () => {
+    // create
+    const patient = generateFakePatient('Luis');
+    const appointmentRepository = new AppointmentRepository();
+
+    // expect
+    const patientAppointments =
+      appointmentRepository.findAppointmentsByPatientId(
+        patient.id,
+        AppointmentReasons.TOOTHACHE.name,
+      );
+    expect(patientAppointments.length).toEqual(0);
+  });
 });
