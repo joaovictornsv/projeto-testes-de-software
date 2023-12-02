@@ -1,10 +1,10 @@
 import { describe, expect, test } from 'vitest';
-import { AppointmentRepository } from '../../repositories/AppointmentRepository.js';
+import { AppointmentRepository } from '../../../repositories/AppointmentRepository.js';
 import {
   generateFakeAppointment,
   generateFakePatient,
-} from '../utils/CreateFakeData.js';
-import { AppointmentReasons } from '../../enums/AppointmentReasons.js';
+} from '../../utils/CreateFakeData.js';
+import { AppointmentReasons } from '../../../enums/AppointmentReasons.js';
 
 describe('AppointmentRepository', () => {
   test('save', () => {

@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
-import { generateFakeService } from '../utils/CreateFakeData.js';
-import { ServiceRepository } from '../../repositories/ServiceRepository.js';
+import { generateFakeService } from '../../utils/CreateFakeData.js';
+import { ServiceRepository } from '../../../repositories/ServiceRepository.js';
 
 describe('ServiceRepository', () => {
   test('save', () => {
