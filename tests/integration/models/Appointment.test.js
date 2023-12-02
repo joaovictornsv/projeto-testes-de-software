@@ -3,7 +3,7 @@ import {
   generateFakeAppointment,
   generateFakeService,
 } from '../../utils/CreateFakeData';
-import { PaymentStatus } from '../../../enums/PaymentTypes';
+import { PaymentStatus, PaymentTypes } from '../../../enums/PaymentTypes';
 import { AppointmentStatus } from '../../../enums/AppointmentStatus';
 
 describe('Appointment', () => {
@@ -83,7 +83,7 @@ describe('Appointment', () => {
     expect(appointment.amount).toEqual(total);
   });
 
-  test('pay->paidOut', () => {
+  test('pay->paidOut - DEBIT_CARD', () => {
     // create
     const service = generateFakeService();
     const appointment = generateFakeAppointment(
@@ -91,7 +91,7 @@ describe('Appointment', () => {
       'Dor de dente',
     );
     appointment.createdAt = new Date('November 1, 2023');
-    const payDate = new Date('November 17, 2023');
+    const payDate = new Date('November 2, 2023');
     const details = 'Extração';
     const amount = 500.0;
 
@@ -105,7 +105,7 @@ describe('Appointment', () => {
 
     // action 2 - pay
     appointment.calculateAmount();
-    appointment.pay(payDate);
+    appointment.pay(payDate, PaymentTypes.DEBIT_CARD.name);
 
     // expected 2 - paid out
     const total = 500.0;
@@ -113,7 +113,7 @@ describe('Appointment', () => {
     expect(appointment.paymentStatus).toEqual(PaymentStatus.PAID_OUT.name);
   });
 
-  test('pay->overdue', () => {
+  test('pay->overdue - DEBIT_CARD', () => {
     // create
     const service = generateFakeService();
     const appointment = generateFakeAppointment(service.patientId, 'Rotina');
@@ -132,10 +132,67 @@ describe('Appointment', () => {
 
     // action 2 - pay
     appointment.calculateAmount();
-    appointment.pay(payDate);
+    appointment.pay(payDate, PaymentTypes.DEBIT_CARD.name);
 
     // expected 2 - paid out
     const total = 550.0;
+    expect(appointment.amount).toEqual(total);
+    expect(appointment.paymentStatus).toEqual(PaymentStatus.OVERDUE.name);
+  });
+
+  test('pay->paidOut - PIX', () => {
+    // create
+    const service = generateFakeService();
+    const appointment = generateFakeAppointment(
+      service.patientId,
+      'Dor de dente',
+    );
+    appointment.createdAt = new Date('November 1, 2023');
+    const payDate = new Date('November 2, 2023');
+    const details = 'Extração';
+    const amount = 500.0;
+
+    // action 1 - do procedure
+    appointment.addProcedure({ details, amount });
+
+    // expected 1 - wait payment
+    expect(appointment.paymentStatus).toEqual(
+      PaymentStatus.WAITING_PAYMENT.name,
+    );
+
+    // action 2 - pay
+    appointment.calculateAmount();
+    appointment.pay(payDate, PaymentTypes.PIX.name);
+
+    // expected 2 - paid out
+    const total = 475.0;
+    expect(appointment.amount).toEqual(total);
+    expect(appointment.paymentStatus).toEqual(PaymentStatus.PAID_OUT.name);
+  });
+
+  test('pay->overdue - PIX', () => {
+    // create
+    const service = generateFakeService();
+    const appointment = generateFakeAppointment(service.patientId, 'Rotina');
+    appointment.createdAt = new Date('November 1, 2023');
+    const payDate = new Date('December 17, 2023');
+    const details = 'Limpeza';
+    const amount = 500.0;
+
+    // action 1 - do procedure
+    appointment.addProcedure({ details, amount });
+
+    // expected 1 - wait payment
+    expect(appointment.paymentStatus).toEqual(
+      PaymentStatus.WAITING_PAYMENT.name,
+    );
+
+    // action 2 - pay
+    appointment.calculateAmount();
+    appointment.pay(payDate, PaymentTypes.PIX.name);
+
+    // expected 2 - paid out
+    const total = 522.5;
     expect(appointment.amount).toEqual(total);
     expect(appointment.paymentStatus).toEqual(PaymentStatus.OVERDUE.name);
   });

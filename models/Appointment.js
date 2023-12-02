@@ -1,6 +1,6 @@
 import { generateRandomId } from '../utils/utils.js';
 import { AppointmentStatus } from '../enums/AppointmentStatus.js';
-import { PaymentStatus } from '../enums/PaymentTypes.js';
+import { PaymentStatus, PaymentTypes } from '../enums/PaymentTypes.js';
 import { Procedure } from './Procedure.js';
 
 // Consulta
@@ -61,12 +61,16 @@ export class Appointment {
     });
   }
 
-  pay(date) {
-    this.checkPayment(date);
+  pay(date, paymentType) {
+    this.checkPayment(date, paymentType);
     this.done();
   }
 
-  checkPayment(date) {
+  checkPayment(date, paymentType) {
+    if (PaymentTypes[paymentType].isPix) {
+      this.amount = this.amount * 0.95;
+    }
+
     const appointmentDate = new Date(this.createdAt);
     const dateToCheck = new Date(appointmentDate);
     dateToCheck.setMonth(dateToCheck.getMonth() + 1);
