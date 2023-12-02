@@ -62,7 +62,7 @@ describe('Service', () => {
     const service = generateFakeService();
 
     // expected
-    expect(() => service.verifyPatientRegisterByName('Ju')).toThrow(
+    expect(() => service.verifyPatientRegisterByName('J')).toThrow(
       'Name has less than 3 characters',
     );
   });
@@ -96,7 +96,7 @@ describe('Service', () => {
     expect(fakePatientRepository.length()).toEqual(1);
   });
 
-  test('registerAppointment - Successful', () => {
+  test('registerAppointment - TOOTHACHE', () => {
     const doctorName = 'Fernando';
     const appointmentType = AppointmentReasons.TOOTHACHE.name;
     const service = generateFakeService();
@@ -122,9 +122,9 @@ describe('Service', () => {
     expect(fakePatientRepository.length()).toEqual(1);
   });
 
-  test('registerAppointment', () => {
+  test('registerAppointment - ROUTINE', () => {
     const doctorName = 'Fernando';
-    const appointmentType = AppointmentReasons.TOOTHACHE.name;
+    const appointmentType = AppointmentReasons.ROUTINE.name;
     const service = generateFakeService();
     const patientData = {
       name: 'João',
@@ -146,5 +146,29 @@ describe('Service', () => {
     expect(appointment.type).toEqual(appointmentType);
 
     expect(fakePatientRepository.length()).toEqual(1);
+  });
+
+  test('registerAppointment - Invalid doctor name', () => {
+    // create
+    const doctorName = null;
+    const appointmentType = AppointmentReasons.TOOTHACHE.name;
+    const service = generateFakeService();
+
+    // expect
+    expect(() =>
+      service.registerAppointment({ doctorName, appointmentType }),
+    ).toThrow('Invalid doctor name!');
+  });
+
+  test('registerAppointment - Invalid appointment type!', () => {
+    // create
+    const doctorName = 'Henrique';
+    const appointmentType = 'Exame laboratorial';
+    const service = generateFakeService();
+
+    // expect
+    expect(() =>
+      service.registerAppointment({ doctorName, appointmentType }),
+    ).toThrow('Invalid appointment type!');
   });
 });

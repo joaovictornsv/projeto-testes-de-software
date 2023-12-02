@@ -3,6 +3,7 @@ import { Appointment } from './Appointment.js';
 import { Dentist } from './Dentist.js';
 import { Patient } from './Patient.js';
 import { ServiceStatus } from '../enums/ServiceStatus.js';
+import { AppointmentReasons } from '../enums/AppointmentReasons.js';
 
 const cpfRegex =
   /([0-9]{2}[.]?[0-9]{3}[.]?[0-9]{3}[/]?[0-9]{4}-?[0-9]{2})|([0-9]{3}[.]?[0-9]{3}[.]?[0-9]{3}-?[0-9]{2})/;
@@ -80,6 +81,12 @@ export class Service {
   }
 
   registerAppointment({ doctorName, appointmentType }) {
+    if (!doctorName) {
+      throw new Error('Invalid doctor name!');
+    }
+    if (!AppointmentReasons[appointmentType]) {
+      throw new Error('Invalid appointment type!');
+    }
     const dentist = new Dentist(doctorName);
     const appointment = new Appointment(
       {
