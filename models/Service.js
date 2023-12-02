@@ -45,6 +45,17 @@ export class Service {
   }
 
   addDetails(appointmentDetails) {
+    if (!appointmentDetails) {
+      throw new Error('Invalid appointment details');
+    }
+    if (appointmentDetails.length < 10) {
+      throw new Error('Please provide details in at least 10 characters');
+    }
+    if (appointmentDetails.length > 100) {
+      throw new Error(
+        'Please provide details with a maximum of 100 characters',
+      );
+    }
     this.details = appointmentDetails;
     this.status = ServiceStatus.DONE.name;
     this.serviceRepository.update(this.id, {
