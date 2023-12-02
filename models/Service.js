@@ -30,6 +30,7 @@ export class Service {
     this.id = generateRandomId();
     this.attendantId = attendantId;
     this.createdAt = new Date();
+    this.status = ServiceStatus.IN_SERVICE.name;
 
     this.serviceRepository = serviceRepository;
     this.patientRepository = patientRepository;
@@ -38,7 +39,7 @@ export class Service {
     this.serviceRepository.save({
       id: this.id,
       attendantId: this.attendantId,
-      status: ServiceStatus.IN_APPOINTMENT.name,
+      status: this.status,
       createdAt: this.createdAt,
     });
   }

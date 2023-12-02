@@ -5,6 +5,7 @@ import { generateRandomId } from '../../utils/utils';
 import { fakePatientRepository } from '../../repositories/PatientRepository.js';
 import { fakeAppointmentRepository } from '../../repositories/AppointmentRepository.js';
 import { fakeServiceRepository } from '../../repositories/ServiceRepository.js';
+import { AppointmentReasons } from '../../enums/AppointmentReasons.js';
 
 export const generateFakePatient = (name) => {
   return new Patient(
@@ -41,4 +42,21 @@ export const generateFakeService = () => {
       appointmentRepository: fakeAppointmentRepository,
     },
   );
+};
+
+export const generateFakeServiceWithAppointment = () => {
+  const service = generateFakeService();
+  const patient = generateFakePatient('Luis');
+  service.registerPatient({
+    documentNumber: patient.documentNumber,
+    name: patient.name,
+    birthDate: patient.birthDate,
+    address: patient.address,
+    phoneNumbers: patient.phoneNumbers,
+  });
+  service.registerAppointment({
+    doctorName: 'Henrique',
+    appointmentType: AppointmentReasons.TOOTHACHE.name,
+  });
+  return service;
 };

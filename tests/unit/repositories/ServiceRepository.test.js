@@ -1,7 +1,11 @@
 import { describe, expect, test } from 'vitest';
-import { generateFakeService } from '../../utils/CreateFakeData.js';
+import {
+  generateFakeService,
+  generateFakeServiceWithAppointment,
+} from '../../utils/CreateFakeData.js';
 import { ServiceRepository } from '../../../repositories/ServiceRepository.js';
 import { AppointmentReasons } from '../../../enums/AppointmentReasons.js';
+import { ServiceStatus } from '../../../enums/ServiceStatus.js';
 
 describe('ServiceRepository', () => {
   test('save', () => {
@@ -68,5 +72,50 @@ describe('ServiceRepository', () => {
     expect(() =>
       service.registerAppointment({ doctorName, appointmentType }),
     ).toThrow('Invalid appointment type!');
+  });
+
+  test('find service by id - service not finalized', () => {
+    // create
+    const serviceRepository = new ServiceRepository();
+    const service = generateFakeServiceWithAppointment();
+    serviceRepository.save(service);
+
+    const serviceFound = serviceRepository.findById(service.id);
+    expect(serviceFound).toBeTruthy();
+    expect(serviceFound.id).toEqual(service.id);
+    expect(serviceFound.attendantId).toEqual(service.attendantId);
+    expect(serviceFound.createdAt).toEqual(service.createdAt);
+    expect(serviceFound.status).toEqual(ServiceStatus.IN_SERVICE.name);
+  });
+
+  test('find service by id - service finalized', () => {
+    // create
+    const serviceRepository = new ServiceRepository();
+    const service = generateFakeServiceWithAppointment();
+    service.addDetails('Example details');
+    serviceRepository.save(service);
+
+    const serviceFound = serviceRepository.findById(service.id);
+    expect(serviceFound).toBeTruthy();
+    expect(serviceFound.id).toEqual(service.id);
+    expect(serviceFound.details).toEqual(service.details);
+    expect(serviceFound.attendantId).toEqual(service.attendantId);
+    expect(serviceFound.createdAt).toEqual(service.createdAt);
+    expect(serviceFound.status).toEqual(ServiceStatus.DONE.name);
+  });
+
+  test('find service by id - service not found', () => {
+    const serviceRepository = new ServiceRepository();
+
+    const serviceFound = serviceRepository.findById('xxx');
+    expect(serviceFound).toBeNull();
+  });
+
+  test('find service by id - missing service id param', () => {
+    const serviceRepository = new ServiceRepository();
+
+    expect(() => serviceRepository.findById()).toThrow(
+      'Informe um número de atendimento',
+    );
   });
 });

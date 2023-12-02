@@ -1,6 +1,13 @@
 import { BaseRepository } from './BaseRepository.js';
 
 export class ServiceRepository extends BaseRepository {
+  findById(id) {
+    if (!id) {
+      throw new Error('Informe um número de atendimento');
+    }
+    return super.findById(id);
+  }
+
   save(newData) {
     newData.numericCode = this.#generateNextNumericCode();
     super.save(newData);
