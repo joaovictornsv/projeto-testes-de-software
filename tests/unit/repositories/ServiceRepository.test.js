@@ -11,19 +11,37 @@ describe('ServiceRepository', () => {
     expect(serviceRepository.findById(service.id)).toBeTruthy();
   });
 
-  test('getNextNumericCode', () => {
+  test('getNextNumericCode - first patient', () => {
     const serviceRepository = new ServiceRepository();
-    const service1 = generateFakeService();
-    const service2 = generateFakeService();
-    const service3 = generateFakeService();
 
-    serviceRepository.save(service1);
     expect(serviceRepository.getNextNumericCode()).toEqual(1);
+  });
 
-    serviceRepository.save(service2);
+  test('getNextNumericCode - second patient', () => {
+    const serviceRepository = new ServiceRepository();
+    const service = generateFakeService();
+    serviceRepository.save(service);
+
     expect(serviceRepository.getNextNumericCode()).toEqual(2);
+  });
 
-    serviceRepository.save(service3);
-    expect(serviceRepository.getNextNumericCode()).toEqual(3);
+  test('getNextNumericCode - 10th patient', () => {
+    const serviceRepository = new ServiceRepository();
+    // eslint-disable-next-line no-unused-vars
+    for (let _ in Array(9).fill(0)) {
+      serviceRepository.save(generateFakeService());
+    }
+
+    expect(serviceRepository.getNextNumericCode()).toEqual(10);
+  });
+
+  test('getNextNumericCode - 50th patient', () => {
+    const serviceRepository = new ServiceRepository();
+    // eslint-disable-next-line no-unused-vars
+    for (let _ in Array(49).fill(0)) {
+      serviceRepository.save(generateFakeService());
+    }
+
+    expect(serviceRepository.getNextNumericCode()).toEqual(50);
   });
 });

@@ -8,7 +8,7 @@ export class ServiceRepository extends BaseRepository {
 
   getNextNumericCode() {
     const latestService = this.#getLatestService();
-    return latestService?.numericCode || 0;
+    return (latestService?.numericCode || 0) + 1;
   }
 
   #generateNextNumericCode() {

@@ -4,6 +4,9 @@ import { Dentist } from './Dentist.js';
 import { Patient } from './Patient.js';
 import { ServiceStatus } from '../enums/ServiceStatus.js';
 
+const cpfRegex =
+  /([0-9]{2}[.]?[0-9]{3}[.]?[0-9]{3}[/]?[0-9]{4}-?[0-9]{2})|([0-9]{3}[.]?[0-9]{3}[.]?[0-9]{3}-?[0-9]{2})/;
+
 // Atendimento
 export class Service {
   id;
@@ -52,7 +55,10 @@ export class Service {
     return this.patientRepository.findByName(patientName);
   }
 
-  registerPatient({ documentNumber, name, birthDate, address, phoneNumbers }) {
+  registerPatient(patientData) {
+    this.#validatePatientData(patientData);
+    const { documentNumber, name, birthDate, address, phoneNumbers } =
+      patientData;
     const patient = new Patient(
       {
         documentNumber,
@@ -84,5 +90,25 @@ export class Service {
       appointmentId: this.appointmentId,
     });
     return appointment;
+  }
+
+  #validatePatientData(patientData) {
+    if (!patientData) {
+      throw new Error(
+        'Por favor, forneça todos os dados necessários antes de prosseguir',
+      );
+    }
+
+    const { documentNumber, name, birthDate, address, phoneNumbers } =
+      patientData;
+    if (!documentNumber || !name || !birthDate || !address || !phoneNumbers) {
+      throw new Error(
+        'Por favor, forneça todos os dados necessários antes de prosseguir',
+      );
+    }
+
+    if (!documentNumber.match(cpfRegex)) {
+      throw new Error('Por favor, forneça um CPF válido');
+    }
   }
 }

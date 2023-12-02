@@ -33,13 +33,41 @@ describe('Service', () => {
     expect(patientFound).toBeNull();
   });
 
-  test('registerPatient', () => {
+  test('registerPatient - without pass patient data', () => {
+    const service = generateFakeService();
+    expect(() => service.registerPatient()).toThrow(
+      'Por favor, forneça todos os dados necessários antes de prosseguir',
+    );
+  });
+
+  test('registerPatient - pass patient data with missing fields', () => {
+    const service = generateFakeService();
+    expect(() => service.registerPatient({ name: 'João' })).toThrow(
+      'Por favor, forneça todos os dados necessários antes de prosseguir',
+    );
+  });
+
+  test('registerPatient - pass patient data with invalid document number', () => {
     const patientData = {
       name: 'João',
-      address: 'Rua José Maria, 130',
-      phoneNumbers: ['99999999999'],
+      address: 'Rua Euzébia Neder, 348',
+      phoneNumbers: ['(99) 8877-6655'],
+      documentNumber: '000',
+      birthDate: new Date('28/02/1999'),
+    };
+    const service = generateFakeService();
+    expect(() => service.registerPatient(patientData)).toThrow(
+      'Por favor, forneça um CPF válido',
+    );
+  });
+
+  test('registerPatient ', () => {
+    const patientData = {
+      name: 'João',
+      address: 'Rua Euzébia Neder, 348',
+      phoneNumbers: ['(99) 8877-6655'],
       documentNumber: '000.000.000-00',
-      birthDate: new Date(),
+      birthDate: new Date('28/02/1999'),
     };
     const service = generateFakeService();
     service.registerPatient(patientData);
